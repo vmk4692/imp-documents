@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import img_1 from "../assets/img_1.jpg";
 import img_2 from "../assets/img_2.png";
 import img_3 from "../assets/img_3.jpg";
@@ -16,6 +16,14 @@ export const BannerSlider = () => {
       setimageIndex(imageIndex - 1);
     }
   };
+  useEffect(()=>{
+    const timer = setTimeout(() => {
+        handelNext();
+    }, 5000);
+    return()=>{
+        clearTimeout(timer)
+    }
+  },[imageIndex])
 
   return (
     <div className="w-6/12 mx-auto mt-20">
