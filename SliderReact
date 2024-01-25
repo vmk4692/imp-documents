@@ -1,0 +1,57 @@
+import React, { useState } from "react";
+import img_1 from "../assets/img_1.jpg";
+import img_2 from "../assets/img_2.png";
+import img_3 from "../assets/img_3.jpg";
+
+export const BannerSlider = () => {
+  const [imageIndex, setimageIndex] = useState(0);
+  let bannerimg = [img_1, img_2, img_3];
+  const handelNext = () => {
+    setimageIndex((imageIndex + 1) % bannerimg.length);
+  };
+  const handelPrivous = () => {
+    if (imageIndex === 0) {
+      setimageIndex(bannerimg.length - 1);
+    } else {
+      setimageIndex(imageIndex - 1);
+    }
+  };
+
+  return (
+    <div className="w-6/12 mx-auto mt-20">
+      <div className="flex justify-between items-center">
+        <button
+          type="button"
+          class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+          onClick={() => handelPrivous()}
+        >
+          Privous
+        </button>
+
+        <div class="bg-indigo-30">
+          {bannerimg.map((url, i) => {
+            return (
+              <img
+                className={`object-cover h-96 w-96 ${
+                  imageIndex === i ? "block" : "hidden"
+                }`}
+                src={url}
+                alt="img"
+              />
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
+          class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+          onClick={() => {
+            handelNext();
+          }}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
