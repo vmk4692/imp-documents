@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <form onsubmit="formSubmit(event)">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">First Name</label>
+                        <input type="text" name="name" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lname" class="form-label">Last Name</label>
+                        <input type="text" name="lname" class="form-control" id="lname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="number" class="form-label">Phone Number</label>
+                        <input type="tel" name="number" class="form-control" id="number" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+                <table class="table table-bordered mt-5">
+                    <thead>
+                        <tr>
+                            <th scope="col">S.No</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Phone Number</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody"> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let rowCounter = 1; 
+        let editingRow = null;
+
+        function formSubmit(e) {
+            e.preventDefault();
+
+            let getname = e.target.name.value;
+            let getlname = e.target.lname.value;
+            let getnumber = e.target.number.value;
+
+            if (editingRow) {
+                // Edit existing row
+                editingRow.cells[1].textContent = getname;
+                editingRow.cells[2].textContent = getlname;
+                editingRow.cells[3].textContent = getnumber;
+                editingRow = null;
+            } else {
+                // Add new row
+                let tbody = document.getElementById('tbody');
+                tbody.innerHTML += `<tr id="row${rowCounter}">
+                    <th scope="row">${rowCounter}</th>
+                    <td>${getname}</td>
+                    <td>${getlname}</td>
+                    <td>${getnumber}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning btn-sm" onclick='editRow(${rowCounter})'>Edit</button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick='deleteRow(${rowCounter})'>Delete</button>
+                    </td>
+                </tr>`;
+                rowCounter++;
+            }
+
+            e.target.reset(); // Clear the form after submission
+            updateSerialNumbers();
+        }
+
+        function editRow(val) {
+            editingRow = document.getElementById(`row${val}`);
+            document.getElementById('name').value = editingRow.cells[1].textContent;
+            document.getElementById('lname').value = editingRow.cells[2].textContent;
+            document.getElementById('number').value = editingRow.cells[3].textContent;
+        }
+
+        function deleteRow(val) {
+            let row = document.getElementById(`row${val}`);
+            row.remove();
+            updateSerialNumbers();
+        }
+
+        function updateSerialNumbers() {
+            let rows = document.querySelectorAll('#tbody tr');
+            rows.forEach((row, index) => {
+                let serialNumberCell = row.querySelector('th');
+                serialNumberCell.textContent = index + 1;
+            });
+        }
+    </script>
+</body>
+</html>
